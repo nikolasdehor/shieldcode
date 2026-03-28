@@ -1,0 +1,11 @@
+{
+  "name": "shieldcode",
+  "description": "Security hardening and error handling expertise for Claude Code. Prevents OWASP Top 10 vulnerabilities, enforces secure defaults, and ensures production-grade error handling in every line of code.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Nikolas de Hor"
+  },
+  "homepage": "https://nikolasdehor.github.io/shieldcode",
+  "repository": "https://github.com/nikolasdehor/shieldcode",
+  "license": "MIT"
+}
