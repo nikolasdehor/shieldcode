@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#09090b"/>
+      <stop offset="50%" style="stop-color:#0d1a12"/>
+      <stop offset="100%" style="stop-color:#060d08"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="50%" style="stop-color:#059669"/>
+      <stop offset="100%" style="stop-color:#047857"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#34d399"/>
+      <stop offset="50%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#6ee7b7"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="10" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="200" fill="url(#bg)"/>
+
+  <!-- Subtle grid lines -->
+  <g opacity="0.04" stroke="#10b981" stroke-width="1">
+    <line x1="0" y1="25" x2="800" y2="25"/>
+    <line x1="0" y1="50" x2="800" y2="50"/>
+    <line x1="0" y1="75" x2="800" y2="75"/>
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="125" x2="800" y2="125"/>
+    <line x1="0" y1="150" x2="800" y2="150"/>
+    <line x1="0" y1="175" x2="800" y2="175"/>
+    <line x1="25" y1="0" x2="25" y2="200"/>
+    <line x1="50" y1="0" x2="50" y2="200"/>
+    <line x1="75" y1="0" x2="75" y2="200"/>
+  </g>
+
+  <!-- Shield glow halo -->
+  <ellipse cx="100" cy="100" rx="60" ry="64" fill="none" stroke="#10b981" stroke-width="1" opacity="0.15" filter="url(#softGlow)"/>
+
+  <!-- Shield body -->
+  <path d="M100 38 L148 58 L148 104 Q148 136 100 158 Q52 136 52 104 L52 58 Z"
+        fill="#0d1f17" stroke="url(#shieldGrad)" stroke-width="2.5" filter="url(#glow)"/>
+
+  <!-- Shield inner detail -->
+  <path d="M100 50 L138 67 L138 104 Q138 128 100 146 Q62 128 62 104 L62 67 Z"
+        fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
+
+  <!-- Checkmark -->
+  <polyline points="82,98 94,110 118,86"
+            fill="none" stroke="#10b981" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"
+            filter="url(#glow)"/>
+
+  <!-- Title text -->
+  <text x="210" y="90" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="52" font-weight="800" fill="url(#textGrad)" letter-spacing="-1" filter="url(#glow)">ShieldCode</text>
+
+  <!-- Tagline -->
+  <text x="212" y="128" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="18" font-weight="400" fill="#94a3b8" letter-spacing="0.5">Security hardening for Claude Code</text>
+
+  <!-- Decorative accent line -->
+  <rect x="210" y="140" width="370" height="2" rx="1" fill="url(#textGrad)" opacity="0.6"/>
+
+  <!-- Small badge labels -->
+  <g font-family="'Courier New', monospace" font-size="11" fill="#64748b">
+    <text x="212" y="167">OWASP Top 10</text>
+    <text x="318" y="167">·</text>
+    <text x="328" y="167">injection</text>
+    <text x="388" y="167">·</text>
+    <text x="398" y="167">auth</text>
+    <text x="430" y="167">·</text>
+    <text x="440" y="167">error handling</text>
+  </g>
+</svg>
