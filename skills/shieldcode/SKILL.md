@@ -502,7 +502,7 @@ MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
 @app.get("/files/{filename}")
 async def get_file(filename: str):
     requested = (UPLOAD_DIR / filename).resolve()
-    if not str(requested).startswith(str(UPLOAD_DIR)):
+    if not str(requested).startswith(str(UPLOAD_DIR) + "/"):
         raise HTTPException(status_code=400, detail="Invalid file path")
     if not requested.exists():
         raise HTTPException(status_code=404, detail="File not found")
@@ -843,7 +843,7 @@ const response = await fetch('https://api.payment.com/charge', {
 
 // SAFE - with timeout, retry, and error handling
 async function callWithRetry<T>(
-  fn: () => Promise<T>,
+  fn: (signal: AbortSignal) => Promise<T>,
   options: { maxAttempts?: number; baseDelayMs?: number; timeoutMs?: number } = {}
 ): Promise<T> {
   const { maxAttempts = 3, baseDelayMs = 200, timeoutMs = 5000 } = options;
@@ -852,7 +852,7 @@ async function callWithRetry<T>(
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      const result = await fn();
+      const result = await fn(controller.signal);
       clearTimeout(timeout);
       return result;
     } catch (error) {
@@ -868,11 +868,12 @@ async function callWithRetry<T>(
   throw new Error('Unreachable');
 }
 
-const response = await callWithRetry(() =>
+const response = await callWithRetry((signal) =>
   fetch('https://api.payment.com/charge', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
+    signal,  // passes abort signal so timeout actually cancels the request
   })
 );
 ```
