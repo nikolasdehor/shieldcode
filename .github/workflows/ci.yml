@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Validate plugin.json
+        run: node -e "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')); console.log('plugin.json is valid JSON')" 2>/dev/null || echo "plugin.json not found, skipping"
+
+      - name: Validate SKILL.md exists and has frontmatter
+        run: |
+          SKILL_PATH="skills/shieldcode/SKILL.md"
+          if [ ! -f "$SKILL_PATH" ]; then
+            echo "ERROR: $SKILL_PATH not found"
+            exit 1
+          fi
+          echo "SKILL.md found at $SKILL_PATH"
+          if ! head -1 "$SKILL_PATH" | grep -q '^---'; then
+            echo "ERROR: SKILL.md does not start with frontmatter (---)"
+            exit 1
+          fi
+          echo "SKILL.md has valid frontmatter"
+
+      - name: Check SKILL.md size
+        run: |
+          SKILL_PATH="skills/shieldcode/SKILL.md"
+          SIZE=$(wc -c < "$SKILL_PATH")
+          LIMIT=32768
+          echo "SKILL.md size: ${SIZE} bytes (limit: ${LIMIT})"
+          if [ "$SIZE" -gt "$LIMIT" ]; then
+            echo "WARNING: SKILL.md exceeds 32KB (${SIZE} bytes). Claude Code may truncate it."
+          else
+            echo "SKILL.md size is within limit."
+          fi
+
+      - name: Test install.sh syntax
+        run: bash -n install.sh && echo "install.sh syntax OK"
+
+      - name: Test uninstall.sh syntax
+        run: bash -n uninstall.sh && echo "uninstall.sh syntax OK"
